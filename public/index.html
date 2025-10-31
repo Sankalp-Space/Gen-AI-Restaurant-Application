@@ -1,14 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Restaurant Chatbot</title>
-</head>
-<body>
-    <h1>
-    Welcome to the Restaurant Chatbot Application
-    </h1>
-    
-</body>
+  </head>
+  <body>
+    <h1>Welcome to the Restaurant Chatbot Application</h1>
+    <div id="chat"></div>
+    <input
+      type="text"
+      id="userInput"
+      placeholder="Ask me : What's on the menu today?"
+    />
+    <button onClick="sendMessage()">Send</button>
+
+    <script>
+      async function sendMessage() {
+        const input = document.getElementById("userInput").value;
+        const res = await fetch("api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ input }),
+        });
+        const data = await res.json();
+        const chatDiv = document.getElementById("chat");
+        chatDiv.innerHTML += `<p><strong>You:</strong> ${input}</p>`;
+        chatDiv.innerHTML += `<p><strong>Bot:</strong> ${data.output}</p>`;
+        document.getElementById("userInput").value="";
+    }
+    </script>
+  </body>
 </html>
